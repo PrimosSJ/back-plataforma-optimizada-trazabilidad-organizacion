@@ -1,0 +1,52 @@
+import express, { json } from 'express';
+import { createServer } from 'http';
+import { Server } from 'socket.io';
+import { connect } from 'mongoose';
+import cors from 'cors';
+
+import inventoryRoutes from './routes/inventoryRoutes.js';
+import prestamosRoutes from './routes/prestamosRoutes.js';
+
+const corsOptions = {
+    origin: '*',
+    credentials: true,
+    methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH']
+};
+
+const app = express();
+app.use(cors(corsOptions));
+const server = createServer(app);
+const io = new Server(server, {
+    cors: {
+        origin: '*',
+        credentials: true,
+        methods: ['GET', 'POST', 'PUT', 'DELETE']
+    }
+});
+
+connect('mongodb+srv://felipe_rojass:Fars0102.@puyoncluster.lum7gul.mongodb.net/?retryWrites=true&w=majority&appName=PuyonCluster', {
+    useNewUrlParser: true,
+    useUnifiedTopology: true
+});
+
+app.use(json());
+
+app.use((req, res, next) => {
+    req.io = io;
+    next();
+});
+
+app.use('/inventario', inventoryRoutes);
+app.use('/prestamos', prestamosRoutes);
+
+io.on('connection', (socket) => {
+    console.log('New client connected', socket.id);
+    socket.on('disconnect', () => {
+        console.log('Client disconnected');
+    });
+});
+
+const PORT = process.env.PORT || 3000;
+server.listen(PORT, () => {
+    console.log(`Server running on port ${PORT}`);
+});
