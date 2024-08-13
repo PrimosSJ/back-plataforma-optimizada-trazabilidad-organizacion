@@ -4,6 +4,10 @@ import { Server } from 'socket.io';
 import { connect } from 'mongoose';
 import cors from 'cors';
 
+// use env variables
+import dotenv from 'dotenv';
+dotenv.config();
+
 import inventoryRoutes from './routes/inventoryRoutes.js';
 import prestamosRoutes from './routes/prestamosRoutes.js';
 
@@ -24,7 +28,7 @@ const io = new Server(server, {
     }
 });
 
-connect('mongodb+srv://felipe_rojass:Fars0102.@puyoncluster.lum7gul.mongodb.net/?retryWrites=true&w=majority&appName=PuyonCluster', {
+connect(process.env.MONGO_DB_URI, {
     useNewUrlParser: true,
     useUnifiedTopology: true
 });
