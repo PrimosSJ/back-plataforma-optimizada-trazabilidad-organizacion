@@ -7,6 +7,7 @@ services:
     container_name: primos-poto-backend
     ports:
       - "4000:4000" # Exponer el puerto del backend
+    restart: unless-stopped
     environment:
       - NODE_ENV=development
       - MONGO_DB_URI=mongodb://mongo:27017/mydatabase # URL de la base de datos Mongo
@@ -22,5 +23,6 @@ services:
     container_name: primos-poto-bd
     ports:
       - "27017:27017" # Exponer el puerto de MongoDB
+    restart: unless-stopped
     volumes:
       - ./data/mongo:/data/db # Guardar los datos de MongoDB en un volumen persistente
