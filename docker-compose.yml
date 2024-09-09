@@ -1,0 +1,26 @@
+---
+services:
+  backend:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: primos-poto-backend
+    ports:
+      - "4000:4000" # Exponer el puerto del backend
+    environment:
+      - NODE_ENV=development
+      - MONGO_DB_URI=mongodb://mongo:27017/mydatabase # URL de la base de datos Mongo
+    depends_on:
+      - mongo # Asegura que MongoDB esté listo antes de iniciar el backend
+    volumes:
+      - .:/app
+      - /app/node_modules
+    command: npm start
+
+  mongo:
+    image: mongo:6.0 # Versión de MongoDB
+    container_name: primos-poto-bd
+    ports:
+      - "27017:27017" # Exponer el puerto de MongoDB
+    volumes:
+      - ./data/mongo:/data/db # Guardar los datos de MongoDB en un volumen persistente
