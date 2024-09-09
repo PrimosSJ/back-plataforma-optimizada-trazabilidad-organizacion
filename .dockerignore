@@ -1,0 +1,12 @@
+# Ignorar node_modules para evitar copiar al contenedor
+node_modules
+npm-debug.log
+yarn-error.log
+dist
+build
+.DS_Store
+.git
+.dockerignore
+.env # Si tienes un archivo de entorno
+.idea
+.vscode

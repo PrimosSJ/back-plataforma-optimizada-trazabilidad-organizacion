@@ -31,7 +31,9 @@ const io = new Server(server, {
 connect(process.env.MONGO_DB_URI, {
     useNewUrlParser: true,
     useUnifiedTopology: true
-});
+})
+.then(() => console.log('Conectado a la BD del POTO'))
+.catch((error) => console.log('Error al conectar a la BD', error));
 
 app.use(json());
 
@@ -50,7 +52,7 @@ io.on('connection', (socket) => {
     });
 });
 
-const PORT = process.env.PORT || 3000;
+const PORT = process.env.PORT || 4000;
 server.listen(PORT, () => {
     console.log(`Server running on port ${PORT}`);
 });
